@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading;
+using SdlApplication.Draw;
+using SdlApplication.Line;
 using SDL2;
 
 namespace SdlApplication.Window
@@ -11,6 +13,8 @@ namespace SdlApplication.Window
         private readonly int _screenWidth;
         private readonly int _screenHeight;
         private readonly string _title;
+        private readonly LinesDrawer _linesDrawer;
+        private readonly RectanglesDrawer _rectanglesDrawer;
 
         private IntPtr _renderer;
         private IntPtr _window;
@@ -20,6 +24,9 @@ namespace SdlApplication.Window
             _title = title;
             _screenHeight = screenHeight;
             _screenWidth = screenWidth;
+            var lineGenerator = new Sdl2Line();
+            _linesDrawer = new LinesDrawer(lineGenerator);
+            _rectanglesDrawer = new RectanglesDrawer(lineGenerator);
         }
 
         public void Open()
@@ -83,7 +90,7 @@ namespace SdlApplication.Window
                         break;
                     }
                 }
-                DrawSircle();
+                Draw();
                 Thread.Sleep(_renderLoopTimeoutMs);
             }
         }
@@ -93,16 +100,16 @@ namespace SdlApplication.Window
         //  где R: от 00 до FF
         //      G: от 00 до FF
         //      B: от 00 до FF 
-        private void DrawSircle()
+        private void Draw()
         {
-            SDL.SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
-            SDL.SDL_RenderClear(_renderer);
             SDL.SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
+            SDL.SDL_RenderClear(_renderer);
+            SDL.SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 0);
 
             int width, height;
             SDL.SDL_GetWindowSize(_window, out width, out height);
 
-            SDL.SDL_RenderDrawPoint(_renderer, width / 2, height / 2);
+            _rectanglesDrawer.DrawRectangles(_renderer, width, height, 10, 1);
 
             SDL.SDL_RenderPresent(_renderer);
         }
