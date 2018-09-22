@@ -3,6 +3,9 @@ using SdlApplication.Line;
 
 namespace SdlApplication.Draw
 {
+    /// <summary>
+    /// This class is only for testing Bresenham's algorithm
+    /// </summary>
     public class LinesDrawer
     {
         private readonly int _offsetFromBorderPx = 10;

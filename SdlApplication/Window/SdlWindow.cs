@@ -24,7 +24,9 @@ namespace SdlApplication.Window
             _title = title;
             _screenHeight = screenHeight;
             _screenWidth = screenWidth;
-            var lineGenerator = new Sdl2Line();
+
+            var lineGenerator = new BresenhamLine();
+
             _linesDrawer = new LinesDrawer(lineGenerator);
             _rectanglesDrawer = new RectanglesDrawer(lineGenerator);
         }
@@ -60,33 +62,6 @@ namespace SdlApplication.Window
                     case SDL.SDL_EventType.SDL_QUIT:
                     {
                         exit = true;
-                        break;
-                    }
-                    case SDL.SDL_EventType.SDL_KEYDOWN:
-                    {
-                        var key = sdlEvent.key;
-                        switch (key.keysym.sym)
-                        {
-                            case SDL.SDL_Keycode.SDLK_DOWN:
-                                // do smth
-                                break;
-                            case SDL.SDL_Keycode.SDLK_UP:
-                                // do smth
-                                break;
-                        }
-                        break;
-                    }
-                    case SDL.SDL_EventType.SDL_MOUSEBUTTONDOWN:
-                    {
-                        if (sdlEvent.button.button == SDL.SDL_BUTTON_LEFT)
-                        {
-                            // do smth
-                        }
-                        else
-                        if (sdlEvent.button.button == SDL.SDL_BUTTON_RIGHT)
-                        {
-                            // do smth
-                        }
                         break;
                     }
                 }

@@ -54,6 +54,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Line\BresenhamLine.cs" />
     <Compile Include="Line\ILineGenerator.cs" />
     <Compile Include="Line\Sdl2Line.cs" />
     <Compile Include="Program.cs" />
