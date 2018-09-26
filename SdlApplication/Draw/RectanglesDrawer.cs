@@ -8,24 +8,42 @@ namespace SdlApplication.Draw
     {
         private readonly int _offsetFromBorderPx = 10;
         private readonly ILineGenerator _lineGenerator;
+        private double _mu;
+        private readonly double _muChangeStep = 0.1;
 
         public RectanglesDrawer(ILineGenerator lineGenerator)
         {
             _lineGenerator = lineGenerator;
+            _mu = _muChangeStep;
         }
 
-        public void DrawRectangles(IntPtr renderer, int width, int height, int rectanglesCount, double k)
+        public void DrawRectangles(IntPtr renderer, int width, int height, int rectanglesCount)
         {
             int centerX, centerY, halfSideLength;
-            double mu = GetMu(k, rectanglesCount);
             GetRectangleParameters(width, height, out centerX, out centerY, out halfSideLength);
             SDL.SDL_Point[] vertexes = GetInitialVertexes(centerX, centerY, halfSideLength);
 
             Draw(renderer, vertexes);
             for (int i = 0; i < rectanglesCount; i++)
             {
-                vertexes = GetNewVertexes(mu, vertexes);
+                vertexes = GetNewVertexes(_mu, vertexes);
                 Draw(renderer, vertexes);
+            }
+        }
+
+        public void IncreaseMu()
+        {
+            if (_mu < 1 - _muChangeStep)
+            {
+                _mu += _muChangeStep;
+            }
+        }
+
+        public void DecreaseMu()
+        {
+            if (_mu > _muChangeStep)
+            {
+                _mu -= _muChangeStep;
             }
         }
 
@@ -34,12 +52,6 @@ namespace SdlApplication.Draw
             centerX = width / 2;
             centerY = height / 2;
             halfSideLength = Math.Min(centerX, centerY) - _offsetFromBorderPx;
-        }
-
-        private double GetMu(double k, int n)
-        {
-            double rotationAngle = k * Math.PI / (4 * n);
-            return Math.Tan(rotationAngle) / (1 + Math.Tan(rotationAngle));
         }
 
         private SDL.SDL_Point[] GetInitialVertexes(int centerX, int centerY, int halfSide)
