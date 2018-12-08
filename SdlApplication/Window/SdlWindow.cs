@@ -64,6 +64,20 @@ namespace SdlApplication.Window
                         exit = true;
                         break;
                     }
+                    case SDL.SDL_EventType.SDL_KEYDOWN:
+                    {
+                        var key = sdlEvent.key;
+                        switch (key.keysym.sym)
+                        {
+                            case SDL.SDL_Keycode.SDLK_q:
+                                _rectanglesDrawer.DecreaseMu();
+                                break;
+                            case SDL.SDL_Keycode.SDLK_e:
+                                _rectanglesDrawer.IncreaseMu();
+                                break;
+                        }
+                        break;
+                    }
                 }
                 Draw();
                 Thread.Sleep(_renderLoopTimeoutMs);
@@ -84,7 +98,7 @@ namespace SdlApplication.Window
             int width, height;
             SDL.SDL_GetWindowSize(_window, out width, out height);
 
-            _rectanglesDrawer.DrawRectangles(_renderer, width, height, 10, 1);
+            _rectanglesDrawer.DrawRectangles(_renderer, width, height, 10);
 
             SDL.SDL_RenderPresent(_renderer);
         }
